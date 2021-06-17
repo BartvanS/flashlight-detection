@@ -1,23 +1,24 @@
-# Python programe to illustrate
-# simple thresholding type on an image
-
-# organizing imports
 import cv2
 import numpy as np
-from time import time
-import serial
+from time import time,sleep
 
+# ser = serial.Serial('/dev/ttyACM0')
 cap = cv2.VideoCapture(0)
 if not cap.isOpened():
     print("Cannot open camera")
     exit()
 
 
-def calc_factor(frame):
-    white = calc_white_pixels(frame)
-    total_pixels = frame.shape[0] * frame.shape[1]
-    factor = (white/total_pixels) * 100
-    return factor
+# import serial
+# def ser_write(val):
+#     ser.write(val.encode())
+
+
+# def calc_factor(frame):
+#     white = calc_white_pixels(frame)
+#     total_pixels = frame.shape[0] * frame.shape[1]
+#     factor = (white / total_pixels) * 100
+#     return factor
 
 
 def get_frame_grayscale():
@@ -27,7 +28,7 @@ def get_frame_grayscale():
         return -1
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     # Display the resulting frame
-    lower_flashlight = np.array([0, 0, 255])
+    lower_flashlight = np.array([0, 0, 200])
     upper_flashlight = np.array([179, 255, 255])
     mask = cv2.inRange(hsv, lower_flashlight, upper_flashlight)
     res = cv2.bitwise_and(frame, frame, mask=mask)
@@ -60,11 +61,14 @@ def process(frame):
     time_elapsed = time() - prev_time
     if white_pixels >= threshold:
         prev_time = time()
-        print(calc_factor(frame))
+        print("past threshold")
+        # ser_write("a")
+        sleep(1)
     #     do light stuff
     elif time_elapsed > interval:
         print("wuuutt")
         prev_time = time()
+        # ser_write("b")
     #   do slow down effects
 
 
@@ -80,3 +84,4 @@ if __name__ == "__main__":
         # When everything done, release the capture
     cap.release()
     cv2.destroyAllWindows()
+    # ser.close()
