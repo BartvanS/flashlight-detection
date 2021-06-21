@@ -2,16 +2,16 @@ import cv2
 import numpy as np
 from time import time,sleep
 
-# ser = serial.Serial('/dev/ttyACM0')
+ser = serial.Serial('/dev/ttyACM0')
 cap = cv2.VideoCapture(0)
 if not cap.isOpened():
     print("Cannot open camera")
     exit()
 
 
-# import serial
-# def ser_write(val):
-#     ser.write(val.encode())
+import serial
+def ser_write(val):
+    ser.write(val.encode())
 
 
 # def calc_factor(frame):
@@ -62,13 +62,13 @@ def process(frame):
     if white_pixels >= threshold:
         prev_time = time()
         print("past threshold")
-        # ser_write("a")
+        ser_write("a")
         sleep(1)
     #     do light stuff
     elif time_elapsed > interval:
         print("wuuutt")
         prev_time = time()
-        # ser_write("b")
+        ser_write("b")
     #   do slow down effects
 
 
@@ -84,4 +84,4 @@ if __name__ == "__main__":
         # When everything done, release the capture
     cap.release()
     cv2.destroyAllWindows()
-    # ser.close()
+    ser.close()
