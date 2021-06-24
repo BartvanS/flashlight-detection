@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
-from time import time,sleep
+from time import time, sleep
+
+import serial
 
 ser = serial.Serial('/dev/ttyACM0')
 cap = cv2.VideoCapture(0)
@@ -9,16 +11,8 @@ if not cap.isOpened():
     exit()
 
 
-import serial
 def ser_write(val):
     ser.write(val.encode())
-
-
-# def calc_factor(frame):
-#     white = calc_white_pixels(frame)
-#     total_pixels = frame.shape[0] * frame.shape[1]
-#     factor = (white / total_pixels) * 100
-#     return factor
 
 
 def get_frame_grayscale():
